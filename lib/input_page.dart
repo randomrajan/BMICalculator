@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'reusabale_card.dart';
 import 'constants.dart';
+import 'results_page.dart';
 
 enum Gender {
   male,
@@ -18,6 +19,7 @@ class _InputPageState extends State<InputPage> {
   Gender selectedGender;
   int height = 180;
   int weight = 60;
+  int age = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -127,16 +129,27 @@ class _InputPageState extends State<InputPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              FloatingActionButton(
-                                backgroundColor: Color(0xFF4C4F5E),
-                                child: Icon(Icons.add, color: Colors.white,),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                pressme: () {
+                                  setState(() {
+                                    weight++;
+                                  });
+                                },
                               ),
-                              FloatingActionButton(
-                                child: Icon(Icons.remove),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                pressme: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
                               )
                             ],
-                          )
-
+                          ),
                         ],
                       ),
                       colour: kActivecardcolour,
@@ -145,18 +158,72 @@ class _InputPageState extends State<InputPage> {
                   Expanded(
                     child: ReusableCard(
                       colour: kActivecardcolour,
+                      cardchild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('AGE', style: kLabeltextstyle),
+                          Text(age.toString(), style: kNumberTextStyle),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                pressme: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                pressme: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              color: Color(0xFFEB1555),
-              margin: EdgeInsets.only(top: 10.0),
-              width: double.infinity,
-              height: kBottomcontainerheight,
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage()));
+              },
+              child: Container(
+                child: Text('CALCULATE'),
+                color: Color(0xFFEB1555),
+                margin: EdgeInsets.only(top: 10.0),
+                width: double.infinity,
+                height: kBottomcontainerheight,
+              ),
             ),
           ],
         ));
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  RoundIconButton({this.icon, this.pressme});
+  final IconData icon;
+  final Function pressme;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: pressme,
+      elevation: 0.0,
+      child: Icon(icon),
+      constraints: BoxConstraints.tightFor(width: 56.0, height: 56.0),
+      shape: CircleBorder(),
+      fillColor: Color(0xFF4C4F5E),
+    );
   }
 }
