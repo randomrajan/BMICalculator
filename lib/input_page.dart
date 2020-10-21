@@ -4,6 +4,9 @@ import 'icon_content.dart';
 import 'reusabale_card.dart';
 import 'constants.dart';
 import 'results_page.dart';
+import 'bottom_button.dart';
+import 'round_icon_button.dart';
+import 'calculator_brain.dart';
 
 enum Gender {
   male,
@@ -194,36 +197,24 @@ class _InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ResultsPage()));
+            BottomButton(
+              onTap: () {
+                CalculatorBrain calc =
+                    CalculatorBrain(height: height, weight: weight);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                      bmiResult: calc.calculateBMI(),
+                      resultText: calc.getResult(),
+                      interpretation: calc.getInterpretation(),
+                    ),
+                  ),
+                );
               },
-              child: Container(
-                child: Text('CALCULATE'),
-                color: Color(0xFFEB1555),
-                margin: EdgeInsets.only(top: 10.0),
-                width: double.infinity,
-                height: kBottomcontainerheight,
-              ),
+              buttonTitle: 'CALCULATE',
             ),
           ],
         ));
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({this.icon, this.pressme});
-  final IconData icon;
-  final Function pressme;
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: pressme,
-      elevation: 0.0,
-      child: Icon(icon),
-      constraints: BoxConstraints.tightFor(width: 56.0, height: 56.0),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
-    );
   }
 }
